@@ -23,7 +23,7 @@ async def on_commit_pushed(
     github_api = RUNTIME_CONTEXT.app_installation_client
 
     check_run_name = 'Deployment UI'
-    check_runs_base_uri = f'{repository["url"]}/check-runs'
+    check_runs_base_uri = f'/repos/{repository["full_name"]}/check-runs'
 
     for commit in commits:
         await github_api.post(
