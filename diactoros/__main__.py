@@ -81,6 +81,7 @@ async def on_deploy_action_button_click(
         data={
             'ref': ref,
             'auto_merge': False,
+            'required_contexts': [],
         },
     )
 
