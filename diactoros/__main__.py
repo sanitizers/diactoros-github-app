@@ -78,7 +78,10 @@ async def on_deploy_action_button_click(
     await github_api.post(
         deployments_url,
         preview_api_version='ant-man',
-        data={'ref': ref},
+        data={
+            'ref': ref,
+            'auto_merge': False,
+        },
     )
 
 
