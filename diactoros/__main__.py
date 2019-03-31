@@ -31,7 +31,7 @@ async def on_commit_pushed(
             data={
                 'name': check_run_name,
                 'head_branch': ref,
-                'head_sha': commit['sha'],
+                'head_sha': commit['id'],
                 'status': 'completed',
                 'conclusion': 'neutral',
                 'started_at': f'{datetime.utcnow().isoformat()}Z',
