@@ -54,6 +54,26 @@ async def on_commit_pushed(
             },
         )
 
+              
+@process_event_actions('check_run', {'requested_action'})
+@process_webhook_payload
+async def on_deploy_action_button_click(
+        *,
+        action, check_run, requested_action,
+        repository, sender,
+        installation,
+):
+    """Broadcast a deploy event for the commit."""
+    requested_action_id = requested_action['identifier']
+    if requested_action_id not in {'deploy'}:
+        return
+
+    github_api = RUNTIME_CONTEXT.app_installation_client
+    deployments_url = repository['deployments_url']
+    ref = check_run['head_sha']
+
+    await github_api.post(deployments_url, data={'ref': ref})
+
 
 if __name__ == "__main__":
     run_app(
