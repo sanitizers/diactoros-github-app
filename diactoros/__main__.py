@@ -64,6 +64,7 @@ async def on_deploy_action_button_click(
         action, check_run, requested_action,
         repository, sender,
         installation,
+        organization=None,
 ):
     """Broadcast a deploy event for the commit."""
     requested_action_id = requested_action['identifier']
