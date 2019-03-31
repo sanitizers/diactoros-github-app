@@ -39,7 +39,7 @@ async def on_commit_pushed(
                 'completed_at': f'{datetime.utcnow().isoformat()}Z',
                 'output': {
                     'title':
-                        f'🔘 Commit Deployment UI for {commit["sha"]}',
+                        f'🔘 Commit Deployment UI for {commit["id"]}',
                     'summary':
                         'This change can be deployed. Just push a button (above).'
                         '\n\n'
