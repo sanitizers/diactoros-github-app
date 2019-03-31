@@ -10,9 +10,11 @@ from octomachinery.app.server.runner import run as run_app
 @process_webhook_payload
 async def on_commit_pushed(
         *,
-        ref, head, before, size, distinct_size,
+        ref, before,
         head_commit, base_ref,
-        commits, repository, sender=None,
+        commits, repository,
+        head=None, sender=None,
+        size=None, distinct_size=None,
         installation=None,
         **kwargs,
 ):
