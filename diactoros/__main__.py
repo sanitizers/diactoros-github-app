@@ -75,7 +75,11 @@ async def on_deploy_action_button_click(
     deployments_url = repository['deployments_url']
     ref = check_run['head_sha']
 
-    await github_api.post(deployments_url, data={'ref': ref})
+    await github_api.post(
+        deployments_url,
+        preview_api_version='ant-man',
+        data={'ref': ref},
+    )
 
 
 if __name__ == "__main__":
