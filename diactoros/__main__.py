@@ -6,6 +6,55 @@ from octomachinery.app.runtime.context import RUNTIME_CONTEXT
 from octomachinery.app.server.runner import run as run_app
 
 
+@process_event_actions('push')
+@process_webhook_payload
+async def on_commit_pushed(
+        *,
+        ref, head, before, size, distinct_size,
+        head_commit, base_ref,
+        commits, repository, sender=None,
+        installation=None,
+        **kwargs,
+):
+    """Whenever git push happened."""
+    github_api = RUNTIME_CONTEXT.app_installation_client
+
+    check_run_name = 'Deployment UI'
+    check_runs_base_uri = f'{repository["url"]}/check-runs'
+
+    for commit in commits:
+        await github_api.post(
+            check_runs_base_uri,
+            preview_api_version='antiope',
+            data={
+                'name': check_run_name,
+                'head_branch': ref,
+                'head_sha': commit['sha'],
+                'status': 'completed',
+                'conclusion': 'neutral',
+                'started_at': f'{datetime.utcnow().isoformat()}Z',
+                'completed_at': f'{datetime.utcnow().isoformat()}Z',
+                'output': {
+                    'title':
+                        f'🔘 Commit Deployment UI for {commit["sha"]}',
+                    'summary':
+                        'This change can be deployed. Just push a button (above).'
+                        '\n\n'
+                        '![Deploy it!]('
+                        'https://leaks.wanari.com/wp-content/uploads/2016'
+                        '/05/deploy-play-framework-app-button.jpg)',
+                },
+                'actions': [
+                    {
+                        'label': 'Deploy it!',
+                        'description': 'Deploy this commit',
+                        'identifier': 'deploy',
+                    },
+                ],
+            },
+        )
+
+
 if __name__ == "__main__":
     run_app(
         name='Diactoros-Bot-by-webknjaz',
