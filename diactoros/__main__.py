@@ -31,7 +31,6 @@ async def on_commit_pushed(
             preview_api_version='antiope',
             data={
                 'name': check_run_name,
-                'head_branch': ref,
                 'head_sha': commit['id'],
                 'status': 'completed',
                 'conclusion': 'neutral',
